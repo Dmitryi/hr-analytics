@@ -1,2 +1,6 @@
 project:
   title: "Аналитика зарплат"
+  type: website
+  output-dir: docs
+
+editor: visual
