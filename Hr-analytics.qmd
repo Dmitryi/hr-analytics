@@ -1,13 +1,225 @@
 ---
-title: "Аналитика зарплат"
+title: "Аналитика зарплат 2D Аниматоров"
 format: 
   html:
-    toc: true
+    page-layout: article
     code-fold: true
+    code-tools: true
     html-math-method: katex
-    css: styles.css
+    theme: pulse
+    fontsize: 1.1em
+    linestretch: 1.7
+    highlight-style: ayu
+    toc: true
+    toc-location: right
 ---
 
-## Quarto
+```{r}
+#| warning: false
+#| echo: false
+library(tidyverse)
+library(scales)
+library(kableExtra)
+a <- read_csv("2D_Animator_Resume_12.2023.csv")
+```
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+### Резюме
+
+::: {.panel-tabset}
+
+#### Колличество данных
+
+```{r}
+#| warning: false
+#| echo: false
+colSums(!is.na(a))
+```
+
+#### Таблица данных
+
+```{r}
+#| warning: false
+#| echo: false
+kbl(a) |> 
+  kable_material(c("striped", "hover"))
+```
+
+:::
+
+```{r}
+#| warning: false
+#| echo: false
+a1 <- a |> 
+  select("Junior", "Middle", "Senior", "Team Lead")
+  
+a1 <- gather(a1)
+
+ggplot(a1, mapping = aes(key, value, color = key)) +
+  geom_boxplot(outlier.colour = "red", notch=FALSE) +
+  geom_jitter(shape=16, position=position_jitter(0.2)) +
+  facet_grid() +
+  scale_color_brewer(palette="Set2") +
+  theme_minimal() +
+  labs(x = " ") +
+  labs(y = " ") +
+  scale_y_continuous(labels = comma) +
+  guides(color = FALSE)
+```
+
+```{r}
+#| warning: false
+#| echo: false
+a <- drop_na(a, Junior, Middle, Senior, `Team Lead`)
+knitr::kable(head(summary(a[1:4])))
+```
+
+### Вакансии
+
+```{r}
+#| warning: false
+#| echo: false
+junior <- read_csv("2D_Animator_Vacancy_Junior_12.2023.csv")
+middle <- read_csv("2D_Animator_Vacancy_Middle_12.2023.csv")
+senior <- read_csv("2D_Animator_Vacancy_Senior_12.2023.csv")
+teamlead <- read_csv("2D_Animator_Vacancy_TeamLead_12.2023.csv")
+```
+
+::: {#tbl-panel layout-ncol=2, layout-nrow=2}
+| Зарплата | ДМС | Обучение | Фитнес |
+|:--------:|:---:|:--------:|:------:|
+| 1 | 0 | 0 | 0 |
+
+: Junior {#tbl-first}
+
+| Зарплата | ДМС | Обучение | Фитнес |
+|:--------:|:---:|:--------:|:------:|
+| 20 | 2 | 4 | 0 |
+
+: Middle {#tbl-second}
+
+| Зарплата | ДМС | Обучение | Фитнес |
+|:--------:|:---:|:--------:|:------:|
+| 9 | 0 | 1 | 0 |
+
+: Senior {#tbl-three}
+
+| Зарплата | ДМС | Обучение | Фитнес |
+|:--------:|:---:|:--------:|:------:|
+| 4 | 0 | 1 | 0 |
+
+: Team Lead {#tbl-four}
+
+Колличество данных
+:::
+
+```{r}
+#| warning: false
+#| echo: false
+#| layout-ncol: 2
+#| layout-nrow: 2
+j1 <- gather(junior[ ,1])
+m1 <- gather(middle[ ,1])
+s1 <- gather(senior[ ,1])
+t1 <- gather(teamlead[ ,1])
+
+j1$key <- paste0("Junior")
+m1$key <- paste0("Middle")
+s1$key <- paste0("Senior")
+t1$key <- paste0("Team Lead")
+
+ggplot(j1, mapping = aes(key, value)) +
+  geom_boxplot(colour = "#64c1a4", outlier.colour = "red", notch=FALSE) +
+  geom_jitter() +
+  facet_grid() +
+  theme_minimal() +
+  labs(x = " ") +
+  labs(y = " ") +
+  scale_y_continuous(labels = comma) + 
+  guides(color = FALSE)
+
+ggplot(m1, mapping = aes(key, value)) +
+  geom_boxplot(colour = "#fb8c60", outlier.colour = "red", notch=FALSE) +
+  geom_jitter() +
+  facet_grid() +
+  theme_minimal() +
+  labs(x = " ") +
+  labs(y = " ") +
+  scale_y_continuous(labels = comma) + 
+  guides(color = FALSE)
+
+ggplot(s1, mapping = aes(key, value)) +
+  geom_boxplot(colour = "#8c9fca", outlier.colour = "red", notch=FALSE) +
+  geom_jitter() +
+  facet_grid() +
+  theme_minimal() +
+  labs(x = " ") +
+  labs(y = " ") +
+  scale_y_continuous(labels = comma) + 
+  guides(color = FALSE)
+
+ggplot(t1, mapping = aes(key, value)) +
+  geom_boxplot(colour = "#e78cc4", outlier.colour = "red", notch=FALSE) +
+  geom_jitter() +
+  facet_grid() +
+  theme_minimal() +
+  labs(x = " ") +
+  labs(y = " ") +
+  scale_y_continuous(labels = comma) + 
+  guides(color = FALSE)
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| layout-ncol: 4
+colnames(j1)[2]  <- "Junior"
+colnames(m1)[2]  <- "Middle"
+colnames(s1)[2]  <- "Senior"
+colnames(t1)[2]  <- "Team Lead"
+knitr::kable(head(summary(j1[ ,2])))
+knitr::kable(head(summary(m1[ ,2])))
+knitr::kable(head(summary(s1[ ,2])))
+knitr::kable(head(summary(t1[ ,2])))
+```
+
+### Таблицы данных вакансий
+
+::: {.panel-tabset}
+
+#### Junior
+
+```{r}
+#| warning: false
+#| echo: false
+kbl(junior) |> 
+  kable_minimal("hover")
+```
+
+#### Middle
+
+```{r}
+#| warning: false
+#| echo: false
+kbl(middle) |> 
+  kable_minimal()
+```
+
+#### Senior
+
+```{r}
+#| warning: false
+#| echo: false
+kbl(senior) |> 
+  kable_minimal()
+```
+
+#### Team Lead
+
+```{r}
+#| warning: false
+#| echo: false
+kbl(teamlead) |> 
+  kable_minimal()
+```
+
+:::
