@@ -182,7 +182,7 @@ knitr::kable(head(summary(s1[ ,2])))
 knitr::kable(head(summary(t1[ ,2])))
 ```
 
-### Таблицы данных вакансий
+#### Таблицы данных вакансий
 
 ::: {.panel-tabset}
 
