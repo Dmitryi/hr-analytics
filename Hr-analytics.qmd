@@ -32,7 +32,18 @@ a <- read_csv("2D_Animator_Resume_12.2023.csv")
 ```{r}
 #| warning: false
 #| echo: false
-colSums(!is.na(a))
+p1 <- colSums(!is.na(a[1]))
+p2 <- colSums(!is.na(a[2]))
+p3 <- colSums(!is.na(a[3]))
+p4 <- colSums(!is.na(a[4]))
+p5 <- sum(a$Офис, na.rm = T)
+p6 <- sum(a$Удалённо, na.rm = T)
+p7 <- sum(a$Гибрид, na.rm = T)
+
+p <- tibble("Junior" = p1, "Middle" = p2, "Senior" = p3, "Team Lead" = p4, "Офис" = p5, "Удалённо" = p6, "Гибрид" = p7)
+
+kbl(p) |> 
+  kable_material()
 ```
 
 #### Таблица данных
@@ -115,8 +126,6 @@ teamlead <- read_csv("2D_Animator_Vacancy_TeamLead_12.2023.csv")
 ```{r}
 #| warning: false
 #| echo: false
-#| layout-ncol: 2
-#| layout-nrow: 2
 j1 <- gather(junior[ ,1])
 m1 <- gather(middle[ ,1])
 s1 <- gather(senior[ ,1])
@@ -127,40 +136,15 @@ m1$key <- paste0("Middle")
 s1$key <- paste0("Senior")
 t1$key <- paste0("Team Lead")
 
-ggplot(j1, mapping = aes(key, value)) +
-  geom_boxplot(colour = "#64c1a4", outlier.colour = "red", notch=FALSE) +
-  geom_jitter() +
-  facet_grid() +
-  theme_minimal() +
-  labs(x = " ") +
-  labs(y = " ") +
-  scale_y_continuous(labels = comma) + 
-  guides(color = FALSE)
+q <- rbind2(j1, m1, by="key", all.x=T, sort=F)
+q1 <- rbind2(s1, t1, by="key", all.x=T, sort=F)
+q2 <- rbind2(q, q1)
 
-ggplot(m1, mapping = aes(key, value)) +
-  geom_boxplot(colour = "#fb8c60", outlier.colour = "red", notch=FALSE) +
-  geom_jitter() +
+ggplot(q2, mapping = aes(key, value, color = key)) +
+  geom_boxplot(outlier.colour = "red", notch=FALSE) +
+  geom_jitter(shape=16, position=position_jitter(0.2)) +
   facet_grid() +
-  theme_minimal() +
-  labs(x = " ") +
-  labs(y = " ") +
-  scale_y_continuous(labels = comma) + 
-  guides(color = FALSE)
-
-ggplot(s1, mapping = aes(key, value)) +
-  geom_boxplot(colour = "#8c9fca", outlier.colour = "red", notch=FALSE) +
-  geom_jitter() +
-  facet_grid() +
-  theme_minimal() +
-  labs(x = " ") +
-  labs(y = " ") +
-  scale_y_continuous(labels = comma) + 
-  guides(color = FALSE)
-
-ggplot(t1, mapping = aes(key, value)) +
-  geom_boxplot(colour = "#e78cc4", outlier.colour = "red", notch=FALSE) +
-  geom_jitter() +
-  facet_grid() +
+  scale_color_brewer(palette="Set2") +
   theme_minimal() +
   labs(x = " ") +
   labs(y = " ") +
