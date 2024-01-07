@@ -2,14 +2,10 @@
 title: "Аналитика зарплат 2D Аниматоров"
 format: 
   html:
-    page-layout: article
+    page-layout: full
     code-fold: true
     code-tools: true
     html-math-method: katex
-    theme: pulse
-    fontsize: 1.1em
-    linestretch: 1.7
-    highlight-style: ayu
     toc: true
     toc-location: right
 ---
@@ -95,80 +91,16 @@ senior <- read_csv("2D_Animator_Vacancy_Senior_12.2023.csv")
 teamlead <- read_csv("2D_Animator_Vacancy_TeamLead_12.2023.csv")
 ```
 
-::: {#tbl-panel layout-ncol=2, layout-nrow=2}
-| Зарплата | ДМС | Обучение | Фитнес |
-|:--------:|:---:|:--------:|:------:|
-| 1 | 0 | 0 | 0 |
-
-: Junior {#tbl-first}
-
-| Зарплата | ДМС | Обучение | Фитнес |
-|:--------:|:---:|:--------:|:------:|
-| 20 | 2 | 4 | 0 |
-
-: Middle {#tbl-second}
-
-| Зарплата | ДМС | Обучение | Фитнес |
-|:--------:|:---:|:--------:|:------:|
-| 9 | 0 | 1 | 0 |
-
-: Senior {#tbl-three}
-
-| Зарплата | ДМС | Обучение | Фитнес |
-|:--------:|:---:|:--------:|:------:|
-| 4 | 0 | 1 | 0 |
-
-: Team Lead {#tbl-four}
-
-Колличество данных
-:::
-
-```{r}
-#| warning: false
-#| echo: false
-j1 <- gather(junior[ ,1])
-m1 <- gather(middle[ ,1])
-s1 <- gather(senior[ ,1])
-t1 <- gather(teamlead[ ,1])
-
-j1$key <- paste0("Junior")
-m1$key <- paste0("Middle")
-s1$key <- paste0("Senior")
-t1$key <- paste0("Team Lead")
-
-q <- rbind2(j1, m1, by="key", all.x=T, sort=F)
-q1 <- rbind2(s1, t1, by="key", all.x=T, sort=F)
-q2 <- rbind2(q, q1)
-
-ggplot(q2, mapping = aes(key, value, color = key)) +
-  geom_boxplot(outlier.colour = "red", notch=FALSE) +
-  geom_jitter(shape=16, position=position_jitter(0.2)) +
-  facet_grid() +
-  scale_color_brewer(palette="Set2") +
-  theme_minimal() +
-  labs(x = " ") +
-  labs(y = " ") +
-  scale_y_continuous(labels = comma) + 
-  guides(color = FALSE)
-```
-
-```{r}
-#| warning: false
-#| echo: false
-#| layout-ncol: 4
-colnames(j1)[2]  <- "Junior"
-colnames(m1)[2]  <- "Middle"
-colnames(s1)[2]  <- "Senior"
-colnames(t1)[2]  <- "Team Lead"
-knitr::kable(head(summary(j1[ ,2])))
-knitr::kable(head(summary(m1[ ,2])))
-knitr::kable(head(summary(s1[ ,2])))
-knitr::kable(head(summary(t1[ ,2])))
-```
-
-#### Таблицы данных вакансий
-
 ::: {.panel-tabset}
+
+#### Колличество данных
+
+|    | Зарплата | ДМС | Обучение | Фитнес |
+|:--:|:--------:|:---:|:--------:|:------:|
+| Junior| 1 | 0 | 0 | 0 |
+| Middle | 20 | 2 | 4 | 0 |
+| Senior | 9 | 0 | 1 | 0 |
+| Team Lead | 4 | 0 | 1 | 0 |
 
 #### Junior
 
@@ -207,3 +139,47 @@ kbl(teamlead) |>
 ```
 
 :::
+
+```{r}
+#| warning: false
+#| echo: false
+j1 <- gather(junior[ ,1])
+m1 <- gather(middle[ ,1])
+s1 <- gather(senior[ ,1])
+t1 <- gather(teamlead[ ,1])
+
+j1$key <- paste0("Junior")
+m1$key <- paste0("Middle")
+s1$key <- paste0("Senior")
+t1$key <- paste0("Team Lead")
+
+q <- rbind2(j1, m1, by="key", all.x=T, sort=F)
+q1 <- rbind2(s1, t1, by="key", all.x=T, sort=F)
+q2 <- rbind2(q, q1)
+
+ggplot(q2, mapping = aes(key, value, color = key)) +
+  geom_boxplot(outlier.colour = "red", notch=FALSE) +
+  geom_jitter(shape=16, position=position_jitter(0.2)) +
+  facet_grid() +
+  scale_color_brewer(palette="Set2") +
+  theme_minimal() +
+  labs(x = " ") +
+  labs(y = " ") +
+  scale_y_continuous(labels = comma) + 
+  guides(color = FALSE)
+```
+
+```{r}
+#| warning: false
+#| echo: false
+
+j <- summary(j1[2])
+m <- summary(m1[2])
+s <- summary(s1[2])
+t <- summary(t1[2])
+
+vac <- tibble("Junior" = j, "Middle" = m, "Senior" = s, "Team Lead" = t)
+
+kbl(vac) |> 
+  kable_material()
+```
