@@ -1,5 +1,5 @@
 ---
-title: "Аналитика зарплат 2D Аниматоров"
+title: "Аналитика зарплат Рекрутеров"
 format: 
   html:
     page-layout: full
@@ -16,7 +16,7 @@ format:
 library(tidyverse)
 library(scales)
 library(kableExtra)
-a <- read_csv("2D_Animator_Resume_12.2023.csv")
+a <- read_csv("Recruiter_Resume_02.2024.csv")
 ```
 
 ### Резюме
@@ -48,7 +48,8 @@ kbl(p) |>
 #| warning: false
 #| echo: false
 kbl(a) |> 
-  kable_material(c("striped", "hover"))
+  kable_material(c("striped", "hover")) |> 
+  kableExtra::scroll_box(height = "400px")
 ```
 
 :::
@@ -85,10 +86,10 @@ knitr::kable(head(summary(a[1:4])))
 ```{r}
 #| warning: false
 #| echo: false
-junior <- read_csv("2D_Animator_Vacancy_Junior_12.2023.csv")
-middle <- read_csv("2D_Animator_Vacancy_Middle_12.2023.csv")
-senior <- read_csv("2D_Animator_Vacancy_Senior_12.2023.csv")
-teamlead <- read_csv("2D_Animator_Vacancy_TeamLead_12.2023.csv")
+junior <- read_csv("Recruiter_Vacancy_Junior_02.2024.csv")
+middle <- read_csv("Recruiter_Vacancy_Middle_02.2024.csv")
+senior <- read_csv("Recruiter_Vacancy_Senior_02.2024.csv")
+teamlead <- read_csv("Recruiter_Vacancy_TeamLead_02.2024.csv")
 ```
 
 ::: {.panel-tabset}
@@ -97,10 +98,10 @@ teamlead <- read_csv("2D_Animator_Vacancy_TeamLead_12.2023.csv")
 
 |    | Зарплата | ДМС | Обучение | Фитнес |
 |:--:|:--------:|:---:|:--------:|:------:|
-| Junior| 1 | 0 | 0 | 0 |
-| Middle | 20 | 2 | 4 | 0 |
-| Senior | 9 | 0 | 1 | 0 |
-| Team Lead | 4 | 0 | 1 | 0 |
+| Junior| 100 | 13 | 24 | 3 |
+| Middle | 100 | 11 | 19 | 8 |
+| Senior | 100 | 23 | 15 | 7 |
+| Team Lead | 25 | 2 | 1 | 0 |
 
 #### Junior
 
@@ -108,7 +109,8 @@ teamlead <- read_csv("2D_Animator_Vacancy_TeamLead_12.2023.csv")
 #| warning: false
 #| echo: false
 kbl(junior) |> 
-  kable_minimal("hover")
+  kable_minimal("hover") |> 
+  kableExtra::scroll_box(height = "400px")
 ```
 
 #### Middle
@@ -117,7 +119,8 @@ kbl(junior) |>
 #| warning: false
 #| echo: false
 kbl(middle) |> 
-  kable_minimal()
+  kable_minimal() |> 
+  kableExtra::scroll_box(height = "400px")
 ```
 
 #### Senior
@@ -126,7 +129,8 @@ kbl(middle) |>
 #| warning: false
 #| echo: false
 kbl(senior) |> 
-  kable_minimal()
+  kable_minimal() |> 
+  kableExtra::scroll_box(height = "400px")
 ```
 
 #### Team Lead
@@ -135,7 +139,8 @@ kbl(senior) |>
 #| warning: false
 #| echo: false
 kbl(teamlead) |> 
-  kable_minimal()
+  kable_minimal() |> 
+  kableExtra::scroll_box(height = "400px")
 ```
 
 :::
@@ -181,5 +186,6 @@ t <- summary(t1[2])
 vac <- tibble("Junior" = j, "Middle" = m, "Senior" = s, "Team Lead" = t)
 
 kbl(vac) |> 
-  kable_material()
+  kable_material() |> 
+  kableExtra::scroll_box(height = "400px")
 ```
