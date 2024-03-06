@@ -123,11 +123,11 @@ h1 <- gather(hredu[ ,1])
 r1 <- gather(kadry[ ,1])
 
 j1$key <- paste0("Руководитель отдела кадров")
-m1$key <- paste0("HR BP Vacancy Senior")
-s1$key <- paste0("HR BP Vacancy Middle")
+m1$key <- paste0("HR BP Senior")
+s1$key <- paste0("HR BP Middle")
 t1$key <- paste0("Рекрутеры")
-h1$key <- paste0("Специалист по обучению")
-r1$key <- paste0("Специалист отдела кадров")
+h1$key <- paste0("Спец. по обучению")
+r1$key <- paste0("Спец. отд. кадров")
 
 q <- rbind2(j1, m1, by="key", all.x=T, sort=F)
 q1 <- rbind2(s1, t1, by="key", all.x=T, sort=F)
@@ -159,7 +159,7 @@ t <- summary(t1[2])
 h <- summary(h1[2])
 r <- summary(r1[2])
 
-vac <- tibble("Руководитель отдела кадров" = j, "HR BP Vacancy Senior" = m, "HR BP Vacancy Middle" = s, "Рекрутеры" = t, "Специалист по обучению" = h, "Специалист отдела кадров" = r)
+vac <- tibble("Рекрутеры" = t, "Руководитель отдела кадров" = j, "Спец. отд. кадров" = r, "Спец. по обучению" = h, "HR BP Middle" = s, "HR BP Senior" = m)
 
 kbl(vac) |> 
   kable_material() |> 
