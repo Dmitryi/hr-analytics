@@ -1,18 +1,22 @@
 ---
-title: "Аналитика зарплат"
+title: "Аналитика зарплат 3D Motion Designer"
 format: 
   html:
     page-layout: full
-    code-fold: true
-    code-tools: true
+    code-fold: false
+    code-tools: false
     html-math-method: katex
     toc: true
     toc-location: right
 ---
 
-Зарплатная аналитика по вакансиям: Руководитель отдела кадров, специалист отдела кадров, HR BP, специалист по обучению осуществлялся на hh.ru по региону Москва и Московская область.
+Зарплатная аналитика по вакансиям и резюме.
 
-Аналитика по вакансии рекрутер поиск осуществлялся по телеграм каналам для соискателей проживающих в таких странах как: Казахстан, Армения, Кипр, Грузия, Узбекистан, Черногория, Турция, Сербия, а также каналам для релокантов без георгафического признака.
+**Должность:** 3D Motion Designer.
+
+**Источники данных:** hh.ru, телеграм каналы и чаты для геймдева.
+
+**Регионы:** Россия, Польша, Черногория, Литва, Турция, Эстония, Армения, Словакия, Азербайджан, Кыргызстан, Латвия, Чехия, Таджикистан, Казахстан, Словения, Молдова, Грузия, Кипр, Узбекистан, Сербия
 
 ```{r}
 #| warning: false
@@ -20,19 +24,84 @@ format:
 library(tidyverse)
 library(scales)
 library(kableExtra)
+a <- read_csv("3D_Motion_Resume_04.2024.csv")
 ```
+
+### Резюме
+
+::: {.panel-tabset}
+
+#### Колличество данных
+
+```{r}
+#| warning: false
+#| echo: false
+p1 <- colSums(!is.na(a[1]))
+p2 <- colSums(!is.na(a[2]))
+p3 <- colSums(!is.na(a[3]))
+p4 <- colSums(!is.na(a[4]))
+p5 <- sum(a$Офис, na.rm = T)
+p6 <- sum(a$Удалённо, na.rm = T)
+p7 <- sum(a$Гибрид, na.rm = T)
+
+p <- tibble("Junior" = p1, "Middle" = p2, "Senior" = p3, "Team Lead" = p4, "Офис" = p5, "Удалённо" = p6, "Гибрид" = p7)
+
+kbl(p) |> 
+  kable_material()
+```
+
+#### Таблица данных
+
+```{r}
+#| warning: false
+#| echo: false
+kbl(a) |> 
+  kable_material(c("striped", "hover")) |> 
+  kableExtra::scroll_box(height = "400px")
+```
+
+:::
+
+```{r}
+#| warning: false
+#| echo: false
+#| out-width: 100%
+a1 <- a |> 
+  select("Junior", "Middle", "Senior", "Team Lead")
+  
+a1 <- gather(a1)
+
+ggplot(a1, mapping = aes(key, value, color = key)) +
+  geom_boxplot(outlier.colour = "red", notch=FALSE) +
+  geom_jitter(shape=16, position=position_jitter(0.2)) +
+  facet_grid() +
+  scale_color_brewer(palette="Set2") +
+  theme_minimal() +
+  labs(x = " ") +
+  labs(y = " ") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  scale_y_continuous(labels = comma) +
+  guides(color = FALSE)
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#a <- drop_na(a, Junior, Middle, Senior, `Team Lead`)
+knitr::kable(summary(a[1:4]))
+```
+
+---
 
 ### Вакансии
 
 ```{r}
 #| warning: false
 #| echo: false
-hrd <- read_csv("Руководитель_отдела_кадров_Vacancy_03.2024.csv")
-hrbps <- read_csv("HR_BP_Vacancy_Senior_03.2024.csv")
-hrbpm <- read_csv("HR_BP_Vacancy_Middle_03.2024.csv")
-rec <- read_csv("Рекрутеры_Vacancy_03.2024.csv")
-hredu <- read_csv("Специалист_по_обучению_Vacancy_Middle_03.2024.csv")
-kadry <- read_csv("Специалист_отдела_кадров_Vacancy_Middle_03.2024.csv")
+junior <- read_csv("3D_Motion_Vacancy_Junior_04.2024.csv")
+middle <- read_csv("3D_Motion_Vacancy_Middle_04.2024.csv")
+senior <- read_csv("3D_Motion_Vacancy_Senior_04.2024.csv")
+teamlead <- read_csv("3D_Motion_Vacancy_TeamLead_04.2024.csv")
 ```
 
 ::: {.panel-tabset}
@@ -41,69 +110,47 @@ kadry <- read_csv("Специалист_отдела_кадров_Vacancy_Middle
 
 |    | Зарплата | ДМС | Обучение | Фитнес |
 |:--:|:--------:|:---:|:--------:|:------:|
-| Руководитель отдела кадров| 48 | 4 | 1 | 1 |
-| HR BP Vacancy Senior | 13 | 5 | 3 | 0 |
-| HR BP Vacancy Middle | 16 | 3 | 2 | 0 |
-| Рекрутеры | 42 | 2 | 7 | 0 |
-| Специалист по обучению | 35 | 8 | 9 | 4 |
-| Специалист отдела кадров | 100 | 15 | 8 | 5 |
+| Junior| 1 | 0 | 0 | 0 |
+| Middle | 2 | 0 | 0 | 0 |
+| Senior | 3 | 1 | 0 | 1 |
+| Team Lead | 0 | 0 | 0 | 0 |
 
-#### Руководитель отдела кадров
+#### Junior
 
 ```{r}
 #| warning: false
 #| echo: false
-kbl(hrd) |> 
+kbl(junior) |> 
   kable_minimal("hover") |> 
   kableExtra::scroll_box(height = "400px")
 ```
 
-#### HR BP Vacancy Senior
+#### Middle
 
 ```{r}
 #| warning: false
 #| echo: false
-kbl(hrbps) |> 
+kbl(middle) |> 
   kable_minimal() |> 
   kableExtra::scroll_box(height = "400px")
 ```
 
-#### HR BP Vacancy Middle
+#### Senior
 
 ```{r}
 #| warning: false
 #| echo: false
-kbl(hrbpm) |> 
+kbl(senior) |> 
   kable_minimal() |> 
   kableExtra::scroll_box(height = "400px")
 ```
 
-#### Рекрутеры
+#### Team Lead
 
 ```{r}
 #| warning: false
 #| echo: false
-kbl(rec) |> 
-  kable_minimal() |> 
-  kableExtra::scroll_box(height = "400px")
-```
-
-#### Специалист по обучению
-
-```{r}
-#| warning: false
-#| echo: false
-kbl(hredu) |> 
-  kable_minimal() |> 
-  kableExtra::scroll_box(height = "400px")
-```
-
-#### Специалист отдела кадров
-
-```{r}
-#| warning: false
-#| echo: false
-kbl(kadry) |> 
+kbl(teamlead) |> 
   kable_minimal() |> 
   kableExtra::scroll_box(height = "400px")
 ```
@@ -115,27 +162,21 @@ kbl(kadry) |>
 #| echo: false
 #| out-width: 100%
 
-j1 <- gather(hrd[ ,1])
-m1 <- gather(hrbps[ ,1])
-s1 <- gather(hrbpm[ ,1])
-t1 <- gather(rec[ ,1])
-h1 <- gather(hredu[ ,1])
-r1 <- gather(kadry[ ,1])
+j1 <- gather(junior[ ,1])
+m1 <- gather(middle[ ,1])
+s1 <- gather(senior[ ,1])
+t1 <- gather(teamlead[ ,1])
 
-j1$key <- paste0("Руководитель отдела кадров")
-m1$key <- paste0("HR BP Senior")
-s1$key <- paste0("HR BP Middle")
-t1$key <- paste0("Рекрутеры")
-h1$key <- paste0("Спец. по обучению")
-r1$key <- paste0("Спец. отд. кадров")
+j1$key <- paste0("Junior")
+m1$key <- paste0("Middle")
+s1$key <- paste0("Senior")
+t1$key <- paste0("Team Lead")
 
 q <- rbind2(j1, m1, by="key", all.x=T, sort=F)
 q1 <- rbind2(s1, t1, by="key", all.x=T, sort=F)
-q2 <- rbind2(h1, r1, by="key", all.x=T, sort=F)
-q3 <- rbind2(q, q1)
-q4 <- rbind2(q2, q3)
+q2 <- rbind2(q, q1)
 
-ggplot(q4, mapping = aes(key, value, color = key)) +
+ggplot(q2, mapping = aes(key, value, color = key)) +
   geom_boxplot(outlier.colour = "red", notch=FALSE) +
   geom_jitter(shape=16, position=position_jitter(0.2)) +
   facet_grid() +
@@ -156,10 +197,8 @@ j <- summary(j1[2])
 m <- summary(m1[2])
 s <- summary(s1[2])
 t <- summary(t1[2])
-h <- summary(h1[2])
-r <- summary(r1[2])
 
-vac <- tibble("Рекрутеры" = t, "Руководитель отдела кадров" = j, "Спец. отд. кадров" = r, "Спец. по обучению" = h, "HR BP Middle" = s, "HR BP Senior" = m)
+vac <- tibble("Junior" = j, "Middle" = m, "Senior" = s, "Team Lead" = t)
 
 kbl(vac) |> 
   kable_material() |> 
