@@ -1,19 +1,21 @@
 ---
-title: "Аналитика зарплат по вакансиям"
+title: "Аналитика зарплат 1C программистов (ERP)"
 format: 
   html:
     page-layout: full
-    code-fold: false
-    code-tools: false
-    html-math-method: katex
-    toc: true
-    toc-location: right
+code-fold: false
+code-tools: false
+html-math-method: katex
+toc: true
+toc-location: right
 css: styles.css
 ---
+  
+Зарплатная аналитика по вакансиям и резюме.
 
-**Должность:** Специалист по оценке, специалист по адаптации, специалист по корпоративной культуре.
+**Должность:** 1С программист (ERP).
 
-**Источники данных:** hh.ru, телеграм каналы и чаты.
+**Источники данных:** hh.ru.
 
 **Регионы:** Москва, Московская область.
 
@@ -23,91 +25,129 @@ css: styles.css
 library(tidyverse)
 library(scales)
 library(kableExtra)
-a1 <- read_csv("Специалист_по_оценке_Vacancy_Junior_04.2024.csv")
-a2 <- read_csv("Специалист_по_оценке_Vacancy_Middle_04.2024.csv")
-a3 <- read_csv("Специалист_по_оценке_Vacancy_Senior_04.2024.csv")
-a4 <- read_csv("Специалист_по_оценке_Vacancy_TeamLead_04.2024.csv")
-b1 <- read_csv("Специалист_по_адаптации_Vacancy_Junior_04.2024.csv")
-b2 <- read_csv("Специалист_по_адаптации_Vacancy_Middle_04.2024.csv")
-b3 <- read_csv("Специалист_по_адаптации_Vacancy_Senior_04.2024.csv")
-b4 <- read_csv("Специалист_по_адаптации_Vacancy_TeamLead_04.2024.csv")
-c1 <- read_csv("Специалист_по_корпоративной_культуре_Vacancy_Junior_04.2024.csv")
-c2 <- read_csv("Специалист_по_корпоративной_культуре_Vacancy_Middle_04.2024.csv")
-c3 <- read_csv("Специалист_по_корпоративной_культуре_Vacancy_Senior_04.2024.csv")
-c4 <- read_csv("Специалист_по_корпоративной_культуре_Vacancy_TeamLead_04.2024.csv")
+a <- read_csv("1C_Программист_Resume_04.2024.csv")
 ```
 
-## Специалист по оценке
+### Резюме
 
-::: panel-tabset
+::: {.panel-tabset}
+
 #### Колличество данных
 
-|           | Зарплата | ДМС | Обучение | Фитнес |
-|:---------:|:--------:|:---:|:--------:|:------:|
-|  Junior   |    0     |  0  |    0     |   0    |
-|  Middle   |    7     |  4  |    3     |   0    |
-|  Senior   |    4     |  3  |    3     |   1    |
-| Team Lead |    0     |  0  |    0     |   0    |
+```{r}
+#| warning: false
+#| echo: false
+p1 <- colSums(!is.na(a[1]))
+p2 <- colSums(!is.na(a[2]))
+p5 <- sum(a$Офис, na.rm = T)
+p6 <- sum(a$Удалённо, na.rm = T)
+p7 <- sum(a$Гибрид, na.rm = T)
 
-#### Junior
+p <- tibble("Senior" = p1, "Senior+" = p2, "Офис" = p5, "Удалённо" = p6, "Гибрид" = p7)
+
+kbl(p) |> 
+  kable_material()
+```
+
+#### Таблица данных
 
 ```{r}
 #| warning: false
 #| echo: false
-kbl(a1) |> 
-  kable_minimal("hover") |> 
+kbl(a) |> 
+  kable_material(c("striped", "hover")) |> 
   kableExtra::scroll_box(height = "400px")
 ```
 
-#### Middle
+:::
+  
+```{r}
+#| warning: false
+#| echo: false
+#| out-width: 100%
+
+a1 <- a |> 
+  select("Senior", "Senior +")
+
+a1 <- gather(a1)
+
+ggplot(a1, mapping = aes(key, value, color = key)) +
+  geom_boxplot(outlier.colour = "red", notch=FALSE) +
+  geom_jitter(shape=16, position=position_jitter(0.2)) +
+  facet_grid() +
+  scale_color_brewer(palette="Set2") +
+  theme_minimal() +
+  labs(x = " ") +
+  labs(y = " ") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  scale_y_continuous(labels = comma) +
+  guides(color = FALSE)
+```
 
 ```{r}
 #| warning: false
 #| echo: false
-kbl(a2) |> 
-  kable_minimal() |> 
-  kableExtra::scroll_box(height = "400px")
+#a <- drop_na(a, Junior, Middle, Senior, `Team Lead`)
+knitr::kable(summary(a[1:2]))
 ```
+
+---
+  
+### Вакансии
+  
+```{r}
+#| warning: false
+#| echo: false
+
+senior <- read_csv("1C_Программист_Vacancy_Senior_04.2024.csv")
+senior1 <- read_csv("1C_Программист_Vacancy_Senior+_04.2024.csv")
+```
+
+::: {.panel-tabset}
+
+#### Колличество данных
+
+|    | Зарплата | ДМС | Обучение | Фитнес |
+|:--:|:--------:|:---:|:--------:|:------:|
+|Senior| 52 | 14 | 9 | 3 |
+|Senior+ | 6 | 0 | 1 | 0 |
 
 #### Senior
 
 ```{r}
 #| warning: false
 #| echo: false
-kbl(a3) |> 
+kbl(senior) |> 
   kable_minimal() |> 
   kableExtra::scroll_box(height = "400px")
 ```
 
-#### Team Lead
+#### Senior+
 
 ```{r}
 #| warning: false
 #| echo: false
-kbl(a4) |> 
+kbl(senior1) |> 
   kable_minimal() |> 
   kableExtra::scroll_box(height = "400px")
 ```
-:::
 
+:::
+  
 ```{r}
 #| warning: false
 #| echo: false
 #| out-width: 100%
 
-j1 <- gather(a1[ ,1])
-m1 <- gather(a2[ ,1])
-s1 <- gather(a3[ ,1])
-t1 <- gather(a4[ ,1])
+s <- gather(senior[ ,1])
+s1 <- gather(senior1[ ,1])
 
-j1$key <- paste0("Junior")
-m1$key <- paste0("Middle")
-s1$key <- paste0("Senior")
-t1$key <- paste0("Team Lead")
+s$key <- paste0("Senior")
+s1$key <- paste0("Senior+")
 
-q <- rbind2(j1, m1, by="key", all.x=T, sort=F)
-q1 <- rbind2(s1, t1, by="key", all.x=T, sort=F)
-q2 <- rbind2(q, q1)
+#q <- rbind2(j1, m1, by="key", all.x=T, sort=F)
+#q1 <- rbind2(s1, t1, by="key", all.x=T, sort=F)
+q2 <- rbind2(s, s1, by="key", all.x=T, sort=F)
 
 ggplot(q2, mapping = aes(key, value, color = key)) +
   geom_boxplot(outlier.colour = "red", notch=FALSE) +
@@ -126,216 +166,12 @@ ggplot(q2, mapping = aes(key, value, color = key)) +
 #| warning: false
 #| echo: false
 
-j <- summary(j1[2])
-m <- summary(m1[2])
-s <- summary(s1[2])
-t <- summary(t1[2])
+s2 <- summary(s1[2])
+s21 <- summary(s1[2])
 
-vac <- tibble("Junior" = j, "Middle" = m, "Senior" = s, "Team Lead" = t)
+vac <- tibble("Senior" = s2, "Senior+" = s21)
 
 kbl(vac) |> 
-  kable_material() |> 
-  kableExtra::scroll_box(height = "400px")
-```
-
-## Специалист по адаптации
-
-::: panel-tabset
-#### Колличество данных
-
-|           | Зарплата | ДМС | Обучение | Фитнес |
-|:---------:|:--------:|:---:|:--------:|:------:|
-|  Junior   |    3     |  1  |    0     |   0    |
-|  Middle   |    10    |  6  |    3     |   1    |
-|  Senior   |    6     |  1  |    1     |   1    |
-| Team Lead |    0     |  0  |    0     |   0    |
-
-#### Junior
-
-```{r}
-#| warning: false
-#| echo: false
-kbl(b1) |> 
-  kable_minimal("hover") |> 
-  kableExtra::scroll_box(height = "400px")
-```
-
-#### Middle
-
-```{r}
-#| warning: false
-#| echo: false
-kbl(b2) |> 
-  kable_minimal() |> 
-  kableExtra::scroll_box(height = "400px")
-```
-
-#### Senior
-
-```{r}
-#| warning: false
-#| echo: false
-kbl(b3) |> 
-  kable_minimal() |> 
-  kableExtra::scroll_box(height = "400px")
-```
-
-#### Team Lead
-
-```{r}
-#| warning: false
-#| echo: false
-kbl(b4) |> 
-  kable_minimal() |> 
-  kableExtra::scroll_box(height = "400px")
-```
-:::
-
-```{r}
-#| warning: false
-#| echo: false
-#| out-width: 100%
-
-j11 <- gather(b1[ ,1])
-m11 <- gather(b2[ ,1])
-s11 <- gather(b3[ ,1])
-t11 <- gather(b4[ ,1])
-
-j11$key <- paste0("Junior")
-m11$key <- paste0("Middle")
-s11$key <- paste0("Senior")
-t11$key <- paste0("Team Lead")
-
-q11 <- rbind2(j11, m11, by="key", all.x=T, sort=F)
-q111 <- rbind2(s11, t11, by="key", all.x=T, sort=F)
-q12 <- rbind2(q11, q111)
-
-ggplot(q12, mapping = aes(key, value, color = key)) +
-  geom_boxplot(outlier.colour = "red", notch=FALSE) +
-  geom_jitter(shape=16, position=position_jitter(0.2)) +
-  facet_grid() +
-  scale_color_brewer(palette="Set2") +
-  theme_minimal() +
-  labs(x = " ") +
-  labs(y = " ") +
-  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
-  scale_y_continuous(labels = comma) + 
-  guides(color = FALSE)
-```
-
-```{r}
-#| warning: false
-#| echo: false
-
-j1 <- summary(j11[2])
-m1 <- summary(m11[2])
-s1 <- summary(s11[2])
-t1 <- summary(t11[2])
-
-vac1 <- tibble("Junior" = j1, "Middle" = m1, "Senior" = s1, "Team Lead" = t1)
-
-kbl(vac1) |> 
-  kable_material() |> 
-  kableExtra::scroll_box(height = "400px")
-```
-
-## Специалист по корпоративной культуре
-
-::: panel-tabset
-#### Колличество данных
-
-|           | Зарплата | ДМС | Обучение | Фитнес |
-|:---------:|:--------:|:---:|:--------:|:------:|
-|  Junior   |    1     |  0  |    0     |   0    |
-|  Middle   |    6     |  3  |    3     |   0    |
-|  Senior   |    5     |  4  |    1     |   1    |
-| Team Lead |    0     |  0  |    0     |   0    |
-
-#### Junior
-
-```{r}
-#| warning: false
-#| echo: false
-kbl(c1) |> 
-  kable_minimal("hover") |> 
-  kableExtra::scroll_box(height = "400px")
-```
-
-#### Middle
-
-```{r}
-#| warning: false
-#| echo: false
-kbl(c2) |> 
-  kable_minimal() |> 
-  kableExtra::scroll_box(height = "400px")
-```
-
-#### Senior
-
-```{r}
-#| warning: false
-#| echo: false
-kbl(c3) |> 
-  kable_minimal() |> 
-  kableExtra::scroll_box(height = "400px")
-```
-
-#### Team Lead
-
-```{r}
-#| warning: false
-#| echo: false
-kbl(c4) |> 
-  kable_minimal() |> 
-  kableExtra::scroll_box(height = "400px")
-```
-:::
-
-```{r}
-#| warning: false
-#| echo: false
-#| out-width: 100%
-
-j21 <- gather(c1[ ,1])
-m21 <- gather(c2[ ,1])
-s21 <- gather(c3[ ,1])
-t21 <- gather(c4[ ,1])
-
-j21$key <- paste0("Junior")
-m21$key <- paste0("Middle")
-s21$key <- paste0("Senior")
-t21$key <- paste0("Team Lead")
-
-q2 <- rbind2(j21, m21, by="key", all.x=T, sort=F)
-q21 <- rbind2(s21, t21, by="key", all.x=T, sort=F)
-q22 <- rbind2(q2, q21)
-
-ggplot(q22, mapping = aes(key, value, color = key)) +
-  geom_boxplot(outlier.colour = "red", notch=FALSE) +
-  geom_jitter(shape=16, position=position_jitter(0.2)) +
-  facet_grid() +
-  scale_color_brewer(palette="Set2") +
-  theme_minimal() +
-  labs(x = " ") +
-  labs(y = " ") +
-  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
-  scale_y_continuous(labels = comma) + 
-  guides(color = FALSE)
-```
-
-```{r}
-#| warning: false
-#| echo: false
-
-j2 <- summary(j21[2])
-m2 <- summary(m21[2])
-s2 <- summary(s21[2])
-t2 <- summary(t21[2])
-
-vac2 <- tibble("Junior" = j2, "Middle" = m2, "Senior" = s2, "Team Lead" = t2)
-
-kbl(vac2) |> 
   kable_material() |> 
   kableExtra::scroll_box(height = "400px")
 ```
