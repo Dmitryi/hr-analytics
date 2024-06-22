@@ -26,6 +26,8 @@ library(kableExtra)
 a <- read_csv("Recruiter_Resume_02.2024.csv")
 ```
 
+***
+
 ## Резюме
 
 ::: {.panel-tabset}
@@ -64,7 +66,8 @@ kbl(a) |>
 ```{r}
 #| warning: false
 #| echo: false
-#| out-width: 100%
+#| out-width: 90%
+#| fig-align: center
 
 a1 <- a |> 
   select("Junior", "Middle", "Senior", "Team Lead")
@@ -89,6 +92,8 @@ ggplot(a1, mapping = aes(key, value, color = key)) +
 a <- drop_na(a, Junior, Middle, Senior, `Team Lead`)
 knitr::kable(head(summary(a[1:4])))
 ```
+
+***
 
 ## Вакансии
 
@@ -157,7 +162,8 @@ kbl(teamlead) |>
 ```{r}
 #| warning: false
 #| echo: false
-#| out-width: 100%
+#| out-width: 90%
+#| fig-align: center
 
 j1 <- gather(junior[ ,1])
 m1 <- gather(middle[ ,1])
