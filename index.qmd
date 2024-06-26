@@ -3,6 +3,7 @@ title: "Зарплатная аналитика по вакансиям и ре�
 format: 
     dashboard:
         orientation: columns
+        theme: yeti
 css: styles.css
 ---
 
