@@ -1,0 +1,177 @@
+---
+title: "Зарплатная аналитика по вакансиям и резюме"
+format: 
+    dashboard:
+        orientation: columns
+css: styles.css
+---
+
+**Должность:** Рекрутер. \
+**Источники данных:** hh.ru. \
+**Регионы:** Москва, Московская область.
+
+## Column
+
+```{r}
+#| warning: false
+#| echo: false
+library(tidyverse)
+library(plotly)
+a <- read_csv("Recruiter_Resume_02.2024.csv")
+junior <- read_csv("Recruiter_Vacancy_Junior_02.2024.csv")
+middle <- read_csv("Recruiter_Vacancy_Middle_02.2024.csv")
+senior <- read_csv("Recruiter_Vacancy_Senior_02.2024.csv")
+teamlead <- read_csv("Recruiter_Vacancy_TeamLead_02.2024.csv")
+```
+
+```{r}
+a1 <- a |> 
+  select("Junior", "Middle", "Senior", "Team Lead")
+
+a1 <- gather(a1)
+
+p1 <- ggplot(a1, mapping = aes(key, value, color = key)) +
+  geom_boxplot(outlier.colour = "red", notch=FALSE) +
+  geom_jitter(shape=16, position=position_jitter(0.2)) +
+  facet_grid() +
+  scale_color_brewer(palette="Set2") +
+  theme_minimal() +
+  labs(title="Резюме") +
+  labs(x = " ") +
+  labs(y = " ") +
+  scale_y_continuous(labels = scales::comma) +
+  guides(color = FALSE)
+
+ggplotly(p1)
+
+```
+
+### Row {.tabset}
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Статистика
+a <- drop_na(a, Junior, Middle, Senior, `Team Lead`)
+knitr::kable(head(summary(a[1:4])))
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Количество данных
+p1 <- colSums(!is.na(a[1]))
+p2 <- colSums(!is.na(a[2]))
+p3 <- colSums(!is.na(a[3]))
+p4 <- colSums(!is.na(a[4]))
+p5 <- sum(a$Офис, na.rm = T)
+p6 <- sum(a$Удалённо, na.rm = T)
+p7 <- sum(a$Гибрид, na.rm = T)
+
+p <- tibble("Junior" = p1, "Middle" = p2, "Senior" = p3, "Team Lead" = p4, "Офис" = p5, "Удалённо" = p6, "Гибрид" = p7)
+
+knitr::kable(p)
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Данные
+knitr::kable(a) |>
+    kableExtra::scroll_box(height = "350px")
+```
+
+## Column
+
+```{r}
+
+j1 <- gather(junior[ ,1])
+m1 <- gather(middle[ ,1])
+s1 <- gather(senior[ ,1])
+t1 <- gather(teamlead[ ,1])
+
+j1$key <- paste0("Junior")
+m1$key <- paste0("Middle")
+s1$key <- paste0("Senior")
+t1$key <- paste0("Team Lead")
+
+q <- rbind2(j1, m1, by="key", all.x=T, sort=F)
+q1 <- rbind2(s1, t1, by="key", all.x=T, sort=F)
+q2 <- rbind2(q, q1)
+
+p2 <- ggplot(q2, mapping = aes(key, value, color = key)) +
+  geom_boxplot(outlier.colour = "red", notch=FALSE) +
+  geom_jitter(shape=16, position=position_jitter(0.2)) +
+  facet_grid() +
+  scale_color_brewer(palette="Set2") +
+  theme_minimal() +
+  labs(title="Вакансии") +
+  labs(x = " ") +
+  labs(y = " ") +
+  scale_y_continuous(labels = scales::comma) +
+  guides(color = FALSE)
+
+ggplotly(p2)
+
+```
+
+### Row {.tabset}
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Статистика
+
+j <- summary(j1[2])
+m <- summary(m1[2])
+s <- summary(s1[2])
+t <- summary(t1[2])
+
+vac <- tibble("Junior" = j, "Middle" = m, "Senior" = s, "Team Lead" = t)
+
+knitr::kable(vac) |>
+    kableExtra::scroll_box(height = "350px")
+```
+
+::: {.card title="Количество данных"}
+
+|    | Зарплата | ДМС | Обучение | Фитнес |
+|:--:|:--------:|:---:|:--------:|:------:|
+| Junior| 100 | 13 | 24 | 3 |
+| Middle | 100 | 11 | 19 | 8 |
+| Senior | 100 | 23 | 15 | 7 |
+| Team Lead | 25 | 2 | 0 | 0 |
+
+:::
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Junior
+knitr::kable(junior) |>
+    kableExtra::scroll_box(height = "350px")
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Middle
+knitr::kable(middle) |>
+    kableExtra::scroll_box(height = "350px")
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Senior
+knitr::kable(senior) |>
+    kableExtra::scroll_box(height = "350px")
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Team Lead
+knitr::kable(teamlead) |>
+    kableExtra::scroll_box(height = "350px")
+```

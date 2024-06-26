@@ -1,6 +1,10 @@
 project:
-  title: "Аналитика зарплат 2D Аниматоров"
   type: website
   output-dir: docs
 
-editor: visual
+website:
+  title: "HR Analytics"
+
+format:
+  dashboard:
+    theme: litera
