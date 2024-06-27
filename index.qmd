@@ -36,7 +36,7 @@ p1 <- ggplot(a1, mapping = aes(key, value, color = key)) +
   geom_boxplot() +
   geom_jitter(size=0.5, position=position_jitter(0.3)) +
   facet_grid() +
-  scale_color_paletteer_d("MoMAColors::Palermo") +
+  scale_color_paletteer_d("PrettyCols::Bold") +
   theme_minimal() +
   labs(title="Резюме") +
   labs(x = " ") +
@@ -105,7 +105,7 @@ p2 <- ggplot(q2, mapping = aes(key, value, color = key)) +
   geom_boxplot() +
   geom_jitter(size=0.5, position=position_jitter(0.3)) +
   facet_grid() +
-  scale_color_paletteer_d("MoMAColors::Palermo") +
+  scale_color_paletteer_d("PrettyCols::Bold") +
   theme_minimal() +
   labs(title="Вакансии") +
   labs(x = " ") +
@@ -131,8 +131,7 @@ t <- summary(t1[2])
 
 vac <- tibble("Junior" = j, "Middle" = m, "Senior" = s, "Team Lead" = t)
 
-knitr::kable(vac) |>
-    kableExtra::scroll_box(height = "350px")
+knitr::kable(vac)
 ```
 
 ::: {.card title="Количество данных"}

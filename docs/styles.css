@@ -3,3 +3,7 @@
 .quarto-dashboard {
 height: auto;
 }
+
+.card {
+--bs-card-cap-bg: #ffffff;
+}
