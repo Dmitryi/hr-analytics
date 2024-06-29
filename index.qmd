@@ -38,7 +38,8 @@ p1 <- ggplot(a1, mapping = aes(key, value, color = key)) +
   facet_grid() +
   scale_color_paletteer_d("PrettyCols::Bold") +
   theme_minimal() +
-  labs(title="Резюме") +
+  ggtitle('Резюме')+
+  theme(plot.title = element_text(hjust=0.5, face="bold")) +
   labs(x = " ") +
   labs(y = " ") +
   scale_y_continuous(labels = scales::comma) +
@@ -107,7 +108,8 @@ p2 <- ggplot(q2, mapping = aes(key, value, color = key)) +
   facet_grid() +
   scale_color_paletteer_d("PrettyCols::Bold") +
   theme_minimal() +
-  labs(title="Вакансии") +
+  ggtitle('Вакансии')+
+  theme(plot.title = element_text(hjust=0.5, face="bold")) +
   labs(x = " ") +
   labs(y = " ") +
   scale_y_continuous(labels = scales::comma) +
