@@ -74,7 +74,7 @@ ggplotly(p1)
 #| title: Статистика
 a <- drop_na(a, Junior, Middle, Senior, `Team Lead`)
 knitr::kable(head(summary(a[1:4]))) %>%
-    column_spec(4, bold = TRUE)
+    row_spec(5, bold = TRUE)
 ```
 
 ```{r}
@@ -153,7 +153,7 @@ t <- summary(t1[2])
 vac <- tibble("Junior" = j, "Middle" = m, "Senior" = s, "Team Lead" = t)
 
 knitr::kable(vac) %>%
-    column_spec(3, bold = TRUE)
+    row_spec(5, bold = TRUE)
 ```
 
 ::: {.card title="Количество данных"}
