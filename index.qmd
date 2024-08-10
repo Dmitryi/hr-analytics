@@ -74,7 +74,11 @@ ggplotly(p1)
 #| title: Статистика
 a <- drop_na(a, Junior, Middle, Senior, `Team Lead`)
 knitr::kable(head(summary(a[1:4]))) %>%
-    row_spec(5, bold = TRUE)
+    column_spec(2, color = "#6497b1") %>%
+    column_spec(3, color = "#69349b") %>%
+    column_spec(4, color = "#ffaf4e") %>%
+    column_spec(5, color = "#679c35") %>%
+    row_spec(5, bold = TRUE, color = "#000000")
 ```
 
 ```{r}
@@ -153,7 +157,11 @@ t <- summary(t1[2])
 vac <- tibble("Junior" = j, "Middle" = m, "Senior" = s, "Team Lead" = t)
 
 knitr::kable(vac) %>%
-    row_spec(5, bold = TRUE)
+    column_spec(1, color = "#6497b1") %>%
+    column_spec(2, color = "#69349b") %>%
+    column_spec(3, color = "#ffaf4e") %>%
+    column_spec(4, color = "#679c35") %>%
+    row_spec(5, bold = TRUE, color = "#000000")
 ```
 
 ::: {.card title="Количество данных"}
@@ -252,7 +260,11 @@ t3 <- summary(t2[2])
 vac1 <- tibble("Junior" = j3, "Middle" = m3, "Senior" = s3, "Team Lead" = t3)
 
 knitr::kable(vac1) %>%
-    column_spec(3, bold = TRUE)
+    column_spec(1, color = "#6497b1") %>%
+    column_spec(2, color = "#69349b") %>%
+    column_spec(3, color = "#ffaf4e") %>%
+    column_spec(4, color = "#679c35") %>%
+    row_spec(5, bold = TRUE, color = "#000000")
 ```
 
 ::: {.card title="Количество данных"}
@@ -351,7 +363,11 @@ t5 <- summary(t4[2])
 vac2 <- tibble("Junior" = j5, "Middle" = m5, "Senior" = s5, "Team Lead" = t5)
 
 knitr::kable(vac2) %>%
-    column_spec(3, bold = TRUE)
+    column_spec(1, color = "#6497b1") %>%
+    column_spec(2, color = "#69349b") %>%
+    column_spec(3, color = "#ffaf4e") %>%
+    column_spec(4, color = "#679c35") %>%
+    row_spec(5, bold = TRUE, color = "#000000")
 ```
 
 ::: {.card title="Количество данных"}
@@ -450,7 +466,11 @@ t7 <- summary(t6[2])
 vac3 <- tibble("Junior" = j7, "Middle" = m7, "Senior" = s7, "Team Lead" = t7)
 
 knitr::kable(vac3) %>%
-    column_spec(3, bold = TRUE)
+    column_spec(1, color = "#6497b1") %>%
+    column_spec(2, color = "#69349b") %>%
+    column_spec(3, color = "#ffaf4e") %>%
+    column_spec(4, color = "#679c35") %>%
+    row_spec(5, bold = TRUE, color = "#000000")
 ```
 
 ::: {.card title="Количество данных"}
