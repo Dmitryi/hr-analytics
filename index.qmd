@@ -7,11 +7,11 @@ format:
 css: styles.css
 ---
 
-**Источники данных:** hh.ru. \
+**Источники данных:** hh.ru, телеграм каналы (геймдев, арт) \
 **Регионы:** Москва, Московская область. \
-**Даты:** Рекрутер - Февраль 2024 г., Специалист по оценке - Апрель 2024 г., Специалист по корп. культуре - Апрель 2024 г., Специалист по адаптации - Апрель 2024 г.
+**Дата:** Сентябрь 2024 г.
 
-# Рекрутер
+# 3D Animator
 
 ## Column
 
@@ -22,32 +22,47 @@ library(tidyverse)
 library(plotly)
 library(paletteer)
 library(kableExtra)
-a <- read_csv("Recruiter_Resume_02.2024.csv")
-junior <- read_csv("Recruiter_Vacancy_Junior_02.2024.csv")
-middle <- read_csv("Recruiter_Vacancy_Middle_02.2024.csv")
-senior <- read_csv("Recruiter_Vacancy_Senior_02.2024.csv")
-teamlead <- read_csv("Recruiter_Vacancy_TeamLead_02.2024.csv")
-junior_as <- read_csv("Специалист_по_оценке_Vacancy_Junior_04.2024.csv")
-middle_as <- read_csv("Специалист_по_оценке_Vacancy_Middle_04.2024.csv")
-senior_as <- read_csv("Специалист_по_оценке_Vacancy_Senior_04.2024.csv")
-teamlead_as <- read_csv("Специалист_по_оценке_Vacancy_TeamLead_04.2024.csv")
-junior_kk <- read_csv("Специалист_по_корпоративной_культуре_Vacancy_Junior_04.2024.csv")
-middle_kk <- read_csv("Специалист_по_корпоративной_культуре_Vacancy_Middle_04.2024.csv")
-senior_kk <- read_csv("Специалист_по_корпоративной_культуре_Vacancy_Senior_04.2024.csv")
-teamlead_kk <- read_csv("Специалист_по_корпоративной_культуре_Vacancy_TeamLead_04.2024.csv")
-junior_ad <- read_csv("Специалист_по_адаптации_Vacancy_Junior_04.2024.csv")
-middle_ad <- read_csv("Специалист_по_адаптации_Vacancy_Middle_04.2024.csv")
-senior_ad <- read_csv("Специалист_по_адаптации_Vacancy_Senior_04.2024.csv")
-teamlead_ad <- read_csv("Специалист_по_адаптации_Vacancy_TeamLead_04.2024.csv")
+
+# 3D Animator
+
+resume_a <- read_csv("3D_Animator_Resume_09.2024.csv")
+junior_a <- read_csv("3D_Animator_Vacancy_Junior_09.2024.csv")
+middle_a <- read_csv("3D_Animator_Vacancy_Middle_09.2024.csv")
+senior_a <- read_csv("3D_Animator_Vacancy_Senior_09.2024.csv")
+teamlead_a <- read_csv("3D_Animator_Vacancy_TeamLead_09.2024.csv")
+
+# Modeller Character
+
+resume_mc <- read_csv("Modeller_Character_Resume_09.2024.csv")
+junior_mc <- read_csv("Modeller_Character_Vacancy_Junior_09.2024.csv")
+middle_mc <- read_csv("Modeller_Character_Vacancy_Middle_09.2024.csv")
+senior_mc <- read_csv("Modeller_Character_Vacancy_Senior_09.2024.csv")
+teamlead_mc <- read_csv("Modeller_Character_Vacancy_TeamLead_09.2024.csv")
+
+# Modeller Visualizator
+
+resume_mv <- read_csv("Modeller_Visualizator_Resume_09.2024.csv")
+junior_mv <- read_csv("Modeller_Visualizator_Vacancy_Junior_09.2024.csv")
+middle_mv <- read_csv("Modeller_Visualizator_Vacancy_Middle_09.2024.csv")
+senior_mv <- read_csv("Modeller_Visualizator_Vacancy_Senior_09.2024.csv")
+teamlead_mv <- read_csv("Modeller_Visualizator_Vacancy_TeamLead_09.2024.csv")
+
+# Tech Artist
+
+resume_ta <- read_csv("Tech_Artist_Resume_09.2024.csv")
+junior_ta <- read_csv("Tech_Artist_Vacancy_Junior_09.2024.csv")
+middle_ta <- read_csv("Tech_Artist_Vacancy_Middle_09.2024.csv")
+senior_ta <- read_csv("Tech_Artist_Vacancy_Senior_09.2024.csv")
+teamlead_ta <- read_csv("Tech_Artist_Vacancy_TeamLead_09.2024.csv")
 ```
 
 ```{r}
-a1 <- a |> 
+resume_a1 <- resume_a |> 
   select("Junior", "Middle", "Senior", "Team Lead")
 
-a1 <- gather(a1)
+resume_a1 <- gather(resume_a1)
 
-p1 <- ggplot(a1, mapping = aes(key, value, color = key)) +
+p1 <- ggplot(resume_a1, mapping = aes(key, value, color = key)) +
   theme(plot.title = element_text(hjust=0.5, face="bold")) +
   geom_boxplot() +
   geom_jitter(size=0.5, position=position_jitter(0.3)) +
@@ -72,8 +87,8 @@ ggplotly(p1)
 #| warning: false
 #| echo: false
 #| title: Статистика
-a <- drop_na(a, Junior, Middle, Senior, `Team Lead`)
-knitr::kable(head(summary(a[1:4]))) %>%
+resume_a2 <- drop_na(resume_a, Junior, Middle, Senior, `Team Lead`)
+knitr::kable(head(summary(resume_a2[1:4]))) %>%
     column_spec(2, color = "#6497b1") %>%
     column_spec(3, color = "#69349b") %>%
     column_spec(4, color = "#ffaf4e") %>%
@@ -85,24 +100,24 @@ knitr::kable(head(summary(a[1:4]))) %>%
 #| warning: false
 #| echo: false
 #| title: Количество данных
-p1 <- colSums(!is.na(a[1]))
-p2 <- colSums(!is.na(a[2]))
-p3 <- colSums(!is.na(a[3]))
-p4 <- colSums(!is.na(a[4]))
-p5 <- sum(a$Офис, na.rm = T)
-p6 <- sum(a$Удалённо, na.rm = T)
-p7 <- sum(a$Гибрид, na.rm = T)
+a1 <- colSums(!is.na(resume_a[1]))
+a2 <- colSums(!is.na(resume_a[2]))
+a3 <- colSums(!is.na(resume_a[3]))
+a4 <- colSums(!is.na(resume_a[4]))
+a5 <- sum(resume_a$Офис, na.rm = T)
+a6 <- sum(resume_a$Удалённо, na.rm = T)
+a7 <- sum(resume_a$Гибрид, na.rm = T)
 
-p <- tibble("Junior" = p1, "Middle" = p2, "Senior" = p3, "Team Lead" = p4, "Офис" = p5, "Удалённо" = p6, "Гибрид" = p7)
+a <- tibble("Junior" = a1, "Middle" = a2, "Senior" = a3, "Team Lead" = a4, "Офис" = a5, "Удалённо" = a6, "Гибрид" = a7)
 
-knitr::kable(p)
+knitr::kable(a)
 ```
 
 ```{r}
 #| warning: false
 #| echo: false
 #| title: Данные
-knitr::kable(a) |>
+knitr::kable(resume_a) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
@@ -110,10 +125,10 @@ knitr::kable(a) |>
 
 ```{r}
 
-j1 <- gather(junior[ ,1])
-m1 <- gather(middle[ ,1])
-s1 <- gather(senior[ ,1])
-t1 <- gather(teamlead[ ,1])
+j1 <- gather(junior_a[ ,1])
+m1 <- gather(middle_a[ ,1])
+s1 <- gather(senior_a[ ,1])
+t1 <- gather(teamlead_a[ ,1])
 
 j1$key <- paste0("Junior")
 m1$key <- paste0("Middle")
@@ -124,7 +139,7 @@ q <- rbind2(j1, m1, by="key", all.x=T, sort=F)
 q1 <- rbind2(s1, t1, by="key", all.x=T, sort=F)
 q2 <- rbind2(q, q1)
 
-p2 <- ggplot(q2, mapping = aes(key, value, color = key)) +
+p <- ggplot(q2, mapping = aes(key, value, color = key)) +
   geom_boxplot() +
   geom_jitter(size=0.5, position=position_jitter(0.3)) +
   facet_grid() +
@@ -138,7 +153,7 @@ p2 <- ggplot(q2, mapping = aes(key, value, color = key)) +
   theme(plot.title = element_text(hjust=0.5, face="bold")) +
   theme(legend.title = element_text(colour="white"))
 
-ggplotly(p2)
+ggplotly(p)
 
 ```
 
@@ -154,7 +169,7 @@ m <- summary(m1[2])
 s <- summary(s1[2])
 t <- summary(t1[2])
 
-vac <- tibble("Junior" = j, "Middle" = m, "Senior" = s, "Team Lead" = t)
+vac <- tibble("Junior" = "0", "Middle" = m, "Senior" = s, "Team Lead" = "0")
 
 knitr::kable(vac) %>%
     column_spec(1, color = "#6497b1") %>%
@@ -162,16 +177,17 @@ knitr::kable(vac) %>%
     column_spec(3, color = "#ffaf4e") %>%
     column_spec(4, color = "#679c35") %>%
     row_spec(5, bold = TRUE, color = "#000000")
+
 ```
 
 ::: {.card title="Количество данных"}
 
 |    | Зарплата | ДМС | Обучение | Фитнес |
 |:--:|:--------:|:---:|:--------:|:------:|
-| Junior| 100 | 13 | 24 | 3 |
-| Middle | 100 | 11 | 19 | 8 |
-| Senior | 100 | 23 | 15 | 7 |
-| Team Lead | 25 | 2 | 0 | 0 |
+| Junior| 0 | 0 | 0 | 0 |
+| Middle | 7 | 0 | 0 | 0 |
+| Senior | 5 | 0 | 0 | 0 |
+| Team Lead | 0 | 0 | 0 | 0 |
 
 :::
 
@@ -179,7 +195,7 @@ knitr::kable(vac) %>%
 #| warning: false
 #| echo: false
 #| title: Junior
-knitr::kable(junior) |>
+knitr::kable(junior_a) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
@@ -187,7 +203,7 @@ knitr::kable(junior) |>
 #| warning: false
 #| echo: false
 #| title: Middle
-knitr::kable(middle) |>
+knitr::kable(middle_a) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
@@ -195,7 +211,7 @@ knitr::kable(middle) |>
 #| warning: false
 #| echo: false
 #| title: Senior
-knitr::kable(senior) |>
+knitr::kable(senior_a) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
@@ -203,20 +219,88 @@ knitr::kable(senior) |>
 #| warning: false
 #| echo: false
 #| title: Team Lead
-knitr::kable(teamlead) |>
+knitr::kable(teamlead_a) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
-# Специалист по оценке
+# Modeller Character
+
+## Column
+
+```{r}
+resume_mc1 <- resume_mc |> 
+  select("Junior", "Middle", "Senior", "Team Lead")
+
+resume_mc1 <- gather(resume_mc1)
+
+mc <- ggplot(resume_mc1, mapping = aes(key, value, color = key)) +
+  theme(plot.title = element_text(hjust=0.5, face="bold")) +
+  geom_boxplot() +
+  geom_jitter(size=0.5, position=position_jitter(0.3)) +
+  facet_grid() +
+  scale_color_paletteer_d("PrettyCols::Bold") +
+  ggtitle('Резюме') +
+  labs(x = " ") +
+  labs(y = " ") +
+  scale_y_continuous(labels = scales::comma) +
+  theme_minimal() +
+  theme(legend.position = "right") +
+  theme(plot.title = element_text(hjust=0.5, face="bold")) +
+  theme(legend.title = element_text(colour="white"))
+
+ggplotly(mc)
+
+```
+
+### Row {.tabset}
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Статистика
+resume_mc2 <- drop_na(resume_mc, Junior, Middle, Senior, `Team Lead`)
+knitr::kable(head(summary(resume_mc2[1:4]))) %>%
+    column_spec(2, color = "#6497b1") %>%
+    column_spec(3, color = "#69349b") %>%
+    column_spec(4, color = "#ffaf4e") %>%
+    column_spec(5, color = "#679c35") %>%
+    row_spec(5, bold = TRUE, color = "#000000")
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Количество данных
+mc1 <- colSums(!is.na(resume_mc[1]))
+mc2 <- colSums(!is.na(resume_mc[2]))
+mc3 <- colSums(!is.na(resume_mc[3]))
+mc4 <- colSums(!is.na(resume_mc[4]))
+mc5 <- sum(resume_mc$Офис, na.rm = T)
+mc6 <- sum(resume_mc$Удалённо, na.rm = T)
+mc7 <- sum(resume_mc$Гибрид, na.rm = T)
+
+mc0 <- tibble("Junior" = mc1, "Middle" = mc2, "Senior" = mc3, "Team Lead" = mc4, "Офис" = mc5, "Удалённо" = mc6, "Гибрид" = mc7)
+
+knitr::kable(mc0)
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Данные
+knitr::kable(resume_mc) |>
+    kableExtra::scroll_box(height = "350px")
+```
 
 ## Column
 
 ```{r}
 
-j2 <- gather(junior_as[ ,1])
-m2 <- gather(middle_as[ ,1])
-s2 <- gather(senior_as[ ,1])
-t2 <- gather(teamlead_as[ ,1])
+
+j2 <- gather(junior_mc[ ,1])
+m2 <- gather(middle_mc[ ,1])
+s2 <- gather(senior_mc[ ,1])
+t2 <- gather(teamlead_mc[ ,1])
 
 j2$key <- paste0("Junior")
 m2$key <- paste0("Middle")
@@ -257,7 +341,7 @@ m3 <- summary(m2[2])
 s3 <- summary(s2[2])
 t3 <- summary(t2[2])
 
-vac1 <- tibble("Junior" = j3, "Middle" = m3, "Senior" = s3, "Team Lead" = t3)
+vac1 <- tibble("Junior" = "0", "Middle" = m3, "Senior" = s3, "Team Lead" = t3)
 
 knitr::kable(vac1) %>%
     column_spec(1, color = "#6497b1") %>%
@@ -272,9 +356,9 @@ knitr::kable(vac1) %>%
 |    | Зарплата | ДМС | Обучение | Фитнес |
 |:--:|:--------:|:---:|:--------:|:------:|
 | Junior| 0 | 0 | 0 | 0 |
-| Middle | 7 | 5 | 2 | 0 |
-| Senior | 4 | 3 | 4 | 0 |
-| Team Lead | 0 | 0 | 0 | 0 |
+| Middle | 3 | 1 | 1 | 0 |
+| Senior | 3 | 1 | 1 | 0 |
+| Team Lead | 2 | 0 | 0 | 0 |
 
 :::
 
@@ -282,7 +366,7 @@ knitr::kable(vac1) %>%
 #| warning: false
 #| echo: false
 #| title: Junior
-knitr::kable(junior_as) |>
+knitr::kable(junior_mc) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
@@ -290,7 +374,7 @@ knitr::kable(junior_as) |>
 #| warning: false
 #| echo: false
 #| title: Middle
-knitr::kable(middle_as) |>
+knitr::kable(middle_mc) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
@@ -298,7 +382,7 @@ knitr::kable(middle_as) |>
 #| warning: false
 #| echo: false
 #| title: Senior
-knitr::kable(senior_as) |>
+knitr::kable(senior_mc) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
@@ -306,20 +390,87 @@ knitr::kable(senior_as) |>
 #| warning: false
 #| echo: false
 #| title: Team Lead
-knitr::kable(teamlead_as) |>
+knitr::kable(teamlead_mc) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
-# Специалист по корп. культуре
+# Modeller Visualizator
+
+## Column
+
+```{r}
+resume_mv1 <- resume_mv |> 
+  select("Junior", "Middle", "Senior", "Team Lead")
+
+resume_mv1 <- gather(resume_mv1)
+
+mv <- ggplot(resume_mv1, mapping = aes(key, value, color = key)) +
+  theme(plot.title = element_text(hjust=0.5, face="bold")) +
+  geom_boxplot() +
+  geom_jitter(size=0.5, position=position_jitter(0.3)) +
+  facet_grid() +
+  scale_color_paletteer_d("PrettyCols::Bold") +
+  ggtitle('Резюме') +
+  labs(x = " ") +
+  labs(y = " ") +
+  scale_y_continuous(labels = scales::comma) +
+  theme_minimal() +
+  theme(legend.position = "right") +
+  theme(plot.title = element_text(hjust=0.5, face="bold")) +
+  theme(legend.title = element_text(colour="white"))
+
+ggplotly(mv)
+
+```
+
+### Row {.tabset}
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Статистика
+resume_mv2 <- drop_na(resume_mv, Junior, Middle, Senior, `Team Lead`)
+knitr::kable(head(summary(resume_mv2[1:4]))) %>%
+    column_spec(2, color = "#6497b1") %>%
+    column_spec(3, color = "#69349b") %>%
+    column_spec(4, color = "#ffaf4e") %>%
+    column_spec(5, color = "#679c35") %>%
+    row_spec(5, bold = TRUE, color = "#000000")
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Количество данных
+mv1 <- colSums(!is.na(resume_mv[1]))
+mv2 <- colSums(!is.na(resume_mv[2]))
+mv3 <- colSums(!is.na(resume_mv[3]))
+mv4 <- colSums(!is.na(resume_mv[4]))
+mv5 <- sum(resume_mv$Офис, na.rm = T)
+mv6 <- sum(resume_mv$Удалённо, na.rm = T)
+mv7 <- sum(resume_mv$Гибрид, na.rm = T)
+
+mv0 <- tibble("Junior" = mv1, "Middle" = mv2, "Senior" = mv3, "Team Lead" = mv4, "Офис" = mv5, "Удалённо" = mv6, "Гибрид" = mv7)
+
+knitr::kable(mv0)
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Данные
+knitr::kable(resume_mv) |>
+    kableExtra::scroll_box(height = "350px")
+```
 
 ## Column
 
 ```{r}
 
-j4 <- gather(junior_kk[ ,1])
-m4 <- gather(middle_kk[ ,1])
-s4 <- gather(senior_kk[ ,1])
-t4 <- gather(teamlead_kk[ ,1])
+j4 <- gather(junior_mv[ ,1])
+m4 <- gather(middle_mv[ ,1])
+s4 <- gather(senior_mv[ ,1])
+t4 <- gather(teamlead_mv[ ,1])
 
 j4$key <- paste0("Junior")
 m4$key <- paste0("Middle")
@@ -360,7 +511,7 @@ m5 <- summary(m4[2])
 s5 <- summary(s4[2])
 t5 <- summary(t4[2])
 
-vac2 <- tibble("Junior" = j5, "Middle" = m5, "Senior" = s5, "Team Lead" = t5)
+vac2 <- tibble("Junior" = j5, "Middle" = m5, "Senior" = s5, "Team Lead" = "0")
 
 knitr::kable(vac2) %>%
     column_spec(1, color = "#6497b1") %>%
@@ -374,9 +525,9 @@ knitr::kable(vac2) %>%
 
 |    | Зарплата | ДМС | Обучение | Фитнес |
 |:--:|:--------:|:---:|:--------:|:------:|
-| Junior| 1 | 0 | 0 | 0 |
-| Middle | 6 | 3 | 3 | 0 |
-| Senior | 5 | 4 | 1 | 1 |
+| Junior| 2 | 0 | 0 | 0 |
+| Middle | 5 | 1 | 1 | 0 |
+| Senior | 4 | 1 | 0 | 0 |
 | Team Lead | 0 | 0 | 0 | 0 |
 
 :::
@@ -385,7 +536,7 @@ knitr::kable(vac2) %>%
 #| warning: false
 #| echo: false
 #| title: Junior
-knitr::kable(junior_kk) |>
+knitr::kable(junior_mv) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
@@ -393,7 +544,7 @@ knitr::kable(junior_kk) |>
 #| warning: false
 #| echo: false
 #| title: Middle
-knitr::kable(middle_kk) |>
+knitr::kable(middle_mv) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
@@ -401,7 +552,7 @@ knitr::kable(middle_kk) |>
 #| warning: false
 #| echo: false
 #| title: Senior
-knitr::kable(senior_kk) |>
+knitr::kable(senior_mv) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
@@ -409,20 +560,87 @@ knitr::kable(senior_kk) |>
 #| warning: false
 #| echo: false
 #| title: Team Lead
-knitr::kable(teamlead_kk) |>
+knitr::kable(teamlead_mv) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
-# Специалист по адаптации
+# Technical Artist
+
+## Column
+
+```{r}
+resume_ta1 <- resume_ta |> 
+  select("Junior", "Middle", "Senior", "Team Lead")
+
+resume_ta1 <- gather(resume_ta1)
+
+ta <- ggplot(resume_ta1, mapping = aes(key, value, color = key)) +
+  theme(plot.title = element_text(hjust=0.5, face="bold")) +
+  geom_boxplot() +
+  geom_jitter(size=0.5, position=position_jitter(0.3)) +
+  facet_grid() +
+  scale_color_paletteer_d("PrettyCols::Bold") +
+  ggtitle('Резюме') +
+  labs(x = " ") +
+  labs(y = " ") +
+  scale_y_continuous(labels = scales::comma) +
+  theme_minimal() +
+  theme(legend.position = "right") +
+  theme(plot.title = element_text(hjust=0.5, face="bold")) +
+  theme(legend.title = element_text(colour="white"))
+
+ggplotly(ta)
+
+```
+
+### Row {.tabset}
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Статистика
+resume_ta2 <- drop_na(resume_ta, Junior, Middle, Senior, `Team Lead`)
+knitr::kable(head(summary(resume_ta2[1:4]))) %>%
+    column_spec(2, color = "#6497b1") %>%
+    column_spec(3, color = "#69349b") %>%
+    column_spec(4, color = "#ffaf4e") %>%
+    column_spec(5, color = "#679c35") %>%
+    row_spec(5, bold = TRUE, color = "#000000")
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Количество данных
+ta1 <- colSums(!is.na(resume_ta[1]))
+ta2 <- colSums(!is.na(resume_ta[2]))
+ta3 <- colSums(!is.na(resume_ta[3]))
+ta4 <- colSums(!is.na(resume_ta[4]))
+ta5 <- sum(resume_ta$Офис, na.rm = T)
+ta6 <- sum(resume_ta$Удалённо, na.rm = T)
+ta7 <- sum(resume_ta$Гибрид, na.rm = T)
+
+ta0 <- tibble("Junior" = ta1, "Middle" = ta2, "Senior" = ta3, "Team Lead" = ta4, "Офис" = ta5, "Удалённо" = ta6, "Гибрид" = ta7)
+
+knitr::kable(ta0)
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| title: Данные
+knitr::kable(resume_ta) |>
+    kableExtra::scroll_box(height = "350px")
+```
 
 ## Column
 
 ```{r}
 
-j6 <- gather(junior_kk[ ,1])
-m6 <- gather(middle_kk[ ,1])
-s6 <- gather(senior_kk[ ,1])
-t6 <- gather(teamlead_kk[ ,1])
+j6 <- gather(junior_ta[ ,1])
+m6 <- gather(middle_ta[ ,1])
+s6 <- gather(senior_ta[ ,1])
+t6 <- gather(teamlead_ta[ ,1])
 
 j6$key <- paste0("Junior")
 m6$key <- paste0("Middle")
@@ -463,7 +681,7 @@ m7 <- summary(m6[2])
 s7 <- summary(s6[2])
 t7 <- summary(t6[2])
 
-vac3 <- tibble("Junior" = j7, "Middle" = m7, "Senior" = s7, "Team Lead" = t7)
+vac3 <- tibble("Junior" = "0", "Middle" = m7, "Senior" = s7, "Team Lead" = "0")
 
 knitr::kable(vac3) %>%
     column_spec(1, color = "#6497b1") %>%
@@ -477,9 +695,9 @@ knitr::kable(vac3) %>%
 
 |    | Зарплата | ДМС | Обучение | Фитнес |
 |:--:|:--------:|:---:|:--------:|:------:|
-| Junior| 3 | 1 | 0 | 0 |
-| Middle | 10 | 6 | 3 | 1 |
-| Senior | 6 | 1 | 1 | 1 |
+| Junior| 0 | 0 | 0 | 0 |
+| Middle | 1 | 0 | 0 | 0 |
+| Senior | 4 | 0 | 1 | 0 |
 | Team Lead | 0 | 0 | 0 | 0 |
 
 :::
@@ -488,7 +706,7 @@ knitr::kable(vac3) %>%
 #| warning: false
 #| echo: false
 #| title: Junior
-knitr::kable(junior_ad) |>
+knitr::kable(junior_ta) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
@@ -496,7 +714,7 @@ knitr::kable(junior_ad) |>
 #| warning: false
 #| echo: false
 #| title: Middle
-knitr::kable(middle_ad) |>
+knitr::kable(middle_ta) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
@@ -504,7 +722,7 @@ knitr::kable(middle_ad) |>
 #| warning: false
 #| echo: false
 #| title: Senior
-knitr::kable(senior_ad) |>
+knitr::kable(senior_ta) |>
     kableExtra::scroll_box(height = "350px")
 ```
 
@@ -512,6 +730,6 @@ knitr::kable(senior_ad) |>
 #| warning: false
 #| echo: false
 #| title: Team Lead
-knitr::kable(teamlead_ad) |>
+knitr::kable(teamlead_ta) |>
     kableExtra::scroll_box(height = "350px")
 ```
